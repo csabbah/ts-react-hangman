@@ -42,7 +42,11 @@ export function Keyboard() {
       }}
     >
       {KEYS.map((key, index) => {
-        return <button className={`${styles.btn}`}>{key}</button>;
+        return (
+          <button key={index} className={`${styles.btn}`}>
+            {key}
+          </button>
+        );
       })}
     </div>
   );
