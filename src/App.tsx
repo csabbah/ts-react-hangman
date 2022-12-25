@@ -3,10 +3,13 @@ import { HangmanDrawing } from "./HangmanDrawing";
 import { HangmanWord } from "./HangmanWord";
 import { Keyboard } from "./Keyboard";
 import words from "./wordList.json";
+
+function getWord(): string {
+  return words[Math.floor(Math.random() * words.length)];
+}
+
 function App() {
-  const [wordToGuess, setWordToGuess] = useState(() => {
-    return words[Math.floor(Math.random() * words.length)];
-  });
+  const [wordToGuess, setWordToGuess] = useState(getWord);
   const [guessedLetters, setGuessedLetters] = useState<string[]>([]);
 
   const inCorrectLetters = guessedLetters.filter(
@@ -25,13 +28,25 @@ function App() {
     [guessedLetters]
   );
 
+  const isLoser: boolean = inCorrectLetters.length >= 6;
+  // If every iteration of this loop returns true, the entirety of the function is true
+  const isWinner: boolean = wordToGuess.split("").every((letter) => {
+    // If all the guessLetters include the letter in the wordToGuess
+    // Then we have won
+    return guessedLetters.includes(letter);
+  });
+
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      const key = e.key;
+      const key = e.key.toLowerCase();
+
+      // If either or is true (meaning game is over), don't execute callback
+      if (isLoser || isWinner) return;
+
       // If nothing matches, return nothing (cancel the function)
       if (!key.match(/^[a-z]$/)) return;
+
       // If it matches anything from a to z, add it to our guessed letter function
-      e.preventDefault();
       addGuessedLetter(key);
     };
     // Hooking it up and removing it appropriately
@@ -44,7 +59,24 @@ function App() {
     // Anytime changes occur in the guessedLetters state, execute this useEffect
   }, [guessedLetters]);
 
-  console.log(guessedLetters);
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      e.preventDefault();
+      const key = e.key;
+
+      if (key !== "Enter") return;
+
+      setWordToGuess(getWord());
+      setGuessedLetters([]);
+    };
+    // Hooking it up and removing it appropriately
+    document.addEventListener("keypress", handler);
+
+    return () => {
+      document.removeEventListener("keypress", handler);
+    };
+  }, []);
+
   return (
     <div
       style={{
@@ -56,10 +88,24 @@ function App() {
         alignItems: "center",
       }}
     >
-      <div style={{ fontSize: "2rem", textAlign: "center" }}>Lose win</div>
+      <div
+        style={{
+          color: isLoser ? "red" : isWinner ? "green" : "",
+          fontSize: "2rem",
+          textAlign: "center",
+        }}
+      >
+        {(isWinner && "You win, Press Enter to play again!") ||
+          (isLoser && `You lose, Press Enter to try again!`)}
+      </div>
       <HangmanDrawing numberOfGuesses={inCorrectLetters.length} />
-      <HangmanWord guessedLetters={guessedLetters} wordToGuess={wordToGuess} />
+      <HangmanWord
+        reveal={isLoser}
+        guessedLetters={guessedLetters}
+        wordToGuess={wordToGuess}
+      />
       <Keyboard
+        disabled={isLoser || isWinner}
         activeLetter={guessedLetters.filter((letter) =>
           wordToGuess.includes(letter)
         )}
