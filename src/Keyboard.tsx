@@ -33,18 +33,20 @@ type keyboardProps = {
   inactiveLetters: string[];
   addGuessedLetter: (letter: string) => void;
   disabled?: boolean;
+  resetGame: () => void;
 };
 
 export function Keyboard({
   activeLetter,
   inactiveLetters,
   addGuessedLetter,
+  resetGame,
   disabled = false,
 }: keyboardProps) {
   return (
     <div
       style={{
-        width: "100%",
+        width: "90%",
         maxWidth: "700px",
         display: "flex",
         justifyContent: "center",
@@ -53,6 +55,11 @@ export function Keyboard({
         gap: "5px",
       }}
     >
+      {disabled && (
+        <button onClick={() => resetGame()} className={`${styles.playAgain}`}>
+          Play Again
+        </button>
+      )}
       {KEYS.map((key, index) => {
         const isActive = activeLetter.includes(key);
         const inActive = inactiveLetters.includes(key);

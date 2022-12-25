@@ -1,0 +1,9 @@
+.word {
+  font-size: 60px;
+}
+
+@media (max-width: 600px) {
+  .word {
+    font-size: 30px;
+  }
+}

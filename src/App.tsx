@@ -59,6 +59,11 @@ function App() {
     // Anytime changes occur in the guessedLetters state, execute this useEffect
   }, [guessedLetters]);
 
+  function resetGame(): void {
+    setWordToGuess(getWord());
+    setGuessedLetters([]);
+  }
+
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       e.preventDefault();
@@ -83,7 +88,7 @@ function App() {
         maxWidth: "800px",
         display: "flex",
         flexDirection: "column",
-        gap: "2rem",
+        gap: "20px",
         margin: "0 auto",
         alignItems: "center",
       }}
@@ -91,12 +96,21 @@ function App() {
       <div
         style={{
           color: isLoser ? "red" : isWinner ? "green" : "",
-          fontSize: "2rem",
+          fontSize: "30px",
+          fontWeight: "bold",
           textAlign: "center",
         }}
       >
-        {(isWinner && "You win, Press Enter to play again!") ||
-          (isLoser && `You lose, Press Enter to try again!`)}
+        {(isWinner && (
+          <>
+            You win!<br></br> Press Enter or hit Play again
+          </>
+        )) ||
+          (isLoser && (
+            <>
+              You lose!<br></br> Press Enter or hit Play again
+            </>
+          ))}
       </div>
       <HangmanDrawing numberOfGuesses={inCorrectLetters.length} />
       <HangmanWord
@@ -109,6 +123,7 @@ function App() {
         activeLetter={guessedLetters.filter((letter) =>
           wordToGuess.includes(letter)
         )}
+        resetGame={resetGame}
         inactiveLetters={inCorrectLetters}
         addGuessedLetter={addGuessedLetter}
       />
