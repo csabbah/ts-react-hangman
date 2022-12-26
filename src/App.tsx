@@ -96,20 +96,20 @@ function App() {
       <div
         style={{
           color: isLoser ? "red" : isWinner ? "green" : "",
-          fontSize: "30px",
+          fontSize: "25px",
           fontWeight: "bold",
           textAlign: "center",
         }}
       >
         {(isWinner && (
-          <>
+          <span>
             You win!<br></br> Press Enter or hit Play again
-          </>
+          </span>
         )) ||
           (isLoser && (
-            <>
+            <span>
               You lose!<br></br> Press Enter or hit Play again
-            </>
+            </span>
           ))}
       </div>
       <HangmanDrawing numberOfGuesses={inCorrectLetters.length} />
