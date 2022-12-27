@@ -7,6 +7,7 @@ type HangmanDrawingProps = {
 export function HangmanDrawing({ numberOfGuesses }: HangmanDrawingProps) {
   const HEAD = (
     <div
+      key={0}
       style={{
         width: "30px",
         height: "30px",
@@ -20,6 +21,7 @@ export function HangmanDrawing({ numberOfGuesses }: HangmanDrawingProps) {
   );
   const BODY = (
     <div
+      key={1}
       style={{
         width: "10px",
         height: "70px",
@@ -32,6 +34,7 @@ export function HangmanDrawing({ numberOfGuesses }: HangmanDrawingProps) {
   );
   const RIGHT_ARM = (
     <div
+      key={2}
       style={{
         width: "50px",
         height: "10px",
@@ -46,6 +49,7 @@ export function HangmanDrawing({ numberOfGuesses }: HangmanDrawingProps) {
   );
   const LEFT_ARM = (
     <div
+      key={3}
       style={{
         width: "50px",
         height: "10px",
@@ -61,6 +65,7 @@ export function HangmanDrawing({ numberOfGuesses }: HangmanDrawingProps) {
 
   const RIGHT_LEG = (
     <div
+      key={4}
       style={{
         width: "50px",
         height: "10px",
@@ -76,6 +81,7 @@ export function HangmanDrawing({ numberOfGuesses }: HangmanDrawingProps) {
 
   const LEFT_LEG = (
     <div
+      key={5}
       style={{
         width: "50px",
         height: "10px",
